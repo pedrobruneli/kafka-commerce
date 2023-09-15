@@ -1,7 +1,8 @@
 import { Module } from '@nestjs/common';
+import { MailerModule } from './usecases/mailer.module';
 
 @Module({
-  imports: [],
+  imports: [MailerModule],
   controllers: [],
   providers: [],
 })
