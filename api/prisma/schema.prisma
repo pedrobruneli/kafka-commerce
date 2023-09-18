@@ -8,7 +8,65 @@ datasource db {
 }
 
 model User {
-  id    Int     @id @default(autoincrement())
-  email String  @unique
-  name  String?
+  id       Int      @id @default(autoincrement())
+  email    String   @unique
+  name     String?
+  password String
+  Cart     Cart[]
+  Orders   Orders[]
+}
+
+model Orders {
+  id          Int          @id @default(autoincrement())
+  userId      Int
+  orderDate   DateTime
+  orderTime   DateTime
+  orderType   String
+  orderStatus String
+  orderTotal  Float
+  orderItems  OrderItems[]
+  user        User         @relation(fields: [userId], references: [id])
+}
+
+model OrderItems {
+  id         Int       @id @default(autoincrement())
+  orderId    Int
+  quantity   Int
+  price      Float
+  total      Float
+  productsId Int?
+  order      Orders    @relation(fields: [orderId], references: [id])
+  Products   Products? @relation(fields: [productsId], references: [id])
+}
+
+model Cart {
+  id        Int         @id @default(autoincrement())
+  userId    Int
+  user      User        @relation(fields: [userId], references: [id])
+  CartItems CartItems[]
+}
+
+model CartItems {
+  id         Int       @id @default(autoincrement())
+  cartId     Int
+  quantity   Int
+  price      Float
+  total      Float
+  productsId Int?
+  cart       Cart      @relation(fields: [cartId], references: [id])
+  Products   Products? @relation(fields: [productsId], references: [id])
+}
+
+model Products {
+  id          Int          @id @default(autoincrement())
+  name        String
+  description String
+  price       Float
+  image       String
+  category    String
+  quantity    Int
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  CartItems   CartItems[]
+  OrderItems  OrderItems[]
 }
