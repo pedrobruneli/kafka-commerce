@@ -1,11 +1,22 @@
 import { Injectable } from '@nestjs/common';
-import { ClientKafka } from '@nestjs/microservices';
+import { Client, ClientKafka, Transport } from '@nestjs/microservices';
 
 @Injectable()
 export class OrdersService {
-  async createOrder(client: ClientKafka) {
-    client
-      .send('mailer-send', { value: 'test' })
+  @Client({
+    transport: Transport.KAFKA,
+    options: {
+      client: {
+        clientId: 'orders',
+        brokers: ['localhost:29092'],
+      },
+    },
+  })
+  private readonly client: ClientKafka;
+
+  async createOrder() {
+    this.client
+      .emit('mailer-send', { value: 'test' })
       .subscribe((res) => console.log(res));
   }
 }
