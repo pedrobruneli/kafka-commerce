@@ -26,7 +26,6 @@ services:
     image: postgres
     ports:
       - "5432:5432"
-    restart: always
     environment:
       POSTGRES_PASSWORD: password
       POSTGRES_USER: root
@@ -38,7 +37,6 @@ services:
     image: dpage/pgadmin4
     ports:
       - 8080:80
-    restart: always
     environment:
       PGADMIN_DEFAULT_EMAIL: pedro.bruneli@gpsafira.com.br
       PGADMIN_DEFAULT_PASSWORD: password
